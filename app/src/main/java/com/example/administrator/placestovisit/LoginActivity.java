@@ -17,7 +17,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import services.AuthenticationService;
-import services.RetrofitClient;
+import helpers.RetrofitClient;
 
 /**
  * A login screen that offers login via email/password.

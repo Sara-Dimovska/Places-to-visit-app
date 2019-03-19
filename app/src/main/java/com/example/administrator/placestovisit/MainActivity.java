@@ -17,7 +17,12 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
+import android.widget.ListView;
 import android.widget.TextView;
+
+import java.util.List;
+
+import models.Places;
 
 public class MainActivity extends AppCompatActivity {
 
