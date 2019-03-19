@@ -29,7 +29,7 @@ public class RestorantsTab extends Fragment {
         listViewPlaces = (ListView) rootView.findViewById(R.id.listViewRestorants);
 
         RestorantsService restorantsAPI = RetrofitClient.getClient().create(RestorantsService.class);
-        Call<List<Places>> getRestorants = restorantsAPI.get_restorants();
+        Call<List<Places>> getRestorants = restorantsAPI.get_restaurants();
 
         getRestorants.enqueue(new Callback<List<Places>>() {
             @Override
