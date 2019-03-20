@@ -7,22 +7,7 @@ import android.widget.TextView;
 
 import java.util.UUID;
 
-public class PlaceDetails extends Activity {
-
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.item_details);
-
-        UUID seizureId = (UUID)getIntent()
-                .getSerializableExtra("UUID");
-
-        TextView txt  =  findViewById(R.id.mtext);
-
-        Seizure seizure = SeizureSingleton.getInstance(this).getSeizure(seizureId);
+public class PlaceDetails {
 
 
-        txt.setText(seizure.getDate().toString());
-
-    }
 }

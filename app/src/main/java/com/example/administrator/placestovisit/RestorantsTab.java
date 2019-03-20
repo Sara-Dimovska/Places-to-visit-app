@@ -1,5 +1,6 @@
 package com.example.administrator.placestovisit;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
@@ -10,6 +11,7 @@ import android.widget.ListView;
 
 import java.util.List;
 
+import adapters.PlaceAdapter;
 import helpers.RetrofitClient;
 import models.Places;
 import retrofit2.Call;
@@ -21,11 +23,13 @@ public class RestorantsTab extends Fragment {
 
     List<Places> restorants;
     ListView listViewPlaces;
+    Context context;
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.tab_restorants, container, false);
+        context = getActivity().getApplicationContext();
         listViewPlaces = (ListView) rootView.findViewById(R.id.listViewRestorants);
 
         RestorantsService restorantsAPI = RetrofitClient.getClient().create(RestorantsService.class);
@@ -34,7 +38,8 @@ public class RestorantsTab extends Fragment {
         getRestorants.enqueue(new Callback<List<Places>>() {
             @Override
             public void onResponse(Call<List<Places>> call, Response<List<Places>> response) {
-                restorants = response.body();
+                restorants = (List<Places>)response.body();
+                listViewPlaces.setAdapter(new PlaceAdapter(context, restorants));
             }
 
             @Override
