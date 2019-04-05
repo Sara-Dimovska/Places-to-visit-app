@@ -3,6 +3,7 @@ const AuthenticationControllerPolicy = require('./policies/AuthenticationControl
 const RestaurantsController = require('./controllers/RestaurantsController')
 const BarsController = require('./controllers/BarsController')
 const NightclubsController = require('./controllers/NightclubsController')
+const PlaceController = require('./controllers/PlaceController')
 
 module.exports = (app) => {
   app.post('/register',
@@ -13,24 +14,22 @@ module.exports = (app) => {
     AuthenticationController.login
   )
 
+  app.post('/create_place',
+    PlaceController.post
+  )
+
   app.get('/get_restaurants',
     RestaurantsController.get_restaurants
   )
-  app.post('/create_restorant',
-    RestaurantsController.post
+  app.delete('/delete_restorant/:id',
+    RestaurantsController.delete_restaurants
   )
 
   app.get('/get_bars',
     BarsController.get_bars
   )
-  app.post('/create_bar',
-    BarsController.post
-  )
 
   app.get('/get_nightclubs',
-    NightclubsController.get_bars
-  )
-  app.post('/create_nightclub',
-    NightclubsController.post
+    NightclubsController.get_nightclubs
   )
 }

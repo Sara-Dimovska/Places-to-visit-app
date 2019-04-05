@@ -1,16 +1,6 @@
 const { Place } = require('../models')
 
 module.exports = {
-  async post (req, res) {
-    try {
-      const restaurant = await Place.create(req.body)
-      res.send(restaurant.toJSON())
-    } catch (err) {
-      res.status(500).send({
-        error: 'An error has occured trying to create new restaurant.'
-      })
-    }
-  },
   async get_restaurants (req, res) {
     try {
       const restaurants = await Place.findAll({
@@ -23,6 +13,19 @@ module.exports = {
     } catch (err) {
       res.status(500).send({
         error: 'An error has occured trying to  fetch the restaurants.'
+      })
+    }
+  },
+  async delete_restaurants (req, res) {
+    try {
+      const success = await Place.destory({
+        where: { id: req.params.id }
+      })
+      console.log('Success', success)
+      res.sendStatus(200)
+    } catch (err) {
+      res.status(500).send({
+        error: 'An error has occured trying to  delete the restaurant.'
       })
     }
   }

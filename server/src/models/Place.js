@@ -8,7 +8,8 @@ module.exports = (sequalize, DataTypes) => {
     name: DataTypes.STRING,
     address: DataTypes.STRING,
     telephone: DataTypes.STRING,
-    description: DataTypes.STRING
+    description: DataTypes.STRING,
+    image: DataTypes.STRING
   })
   return Place
 }

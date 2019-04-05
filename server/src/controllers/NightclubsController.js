@@ -1,17 +1,7 @@
 const { Place } = require('../models')
 
 module.exports = {
-  async post (req, res) {
-    try {
-      const nightclub = await Place.create(req.body)
-      res.send(nightclub.toJSON())
-    } catch (err) {
-      res.status(500).send({
-        error: 'An error has occured trying to create new nightclub.'
-      })
-    }
-  },
-  async get_bars (req, res) {
+  async get_nightclubs (req, res) {
     try {
       const nightclubs = await Place.findAll({
         where: {

@@ -1,5 +1,6 @@
 package com.example.administrator.placestovisit;
 
+import android.content.Intent;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
@@ -79,8 +80,10 @@ public class MainActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        if (id == R.id.add_new_place) {
+            Intent myIntent =  new Intent(MainActivity.this, NewPlaceActivity.class);
+            startActivity(myIntent);
+            return false;
         }
 
         return super.onOptionsItemSelected(item);

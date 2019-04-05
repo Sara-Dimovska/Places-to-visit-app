@@ -20,32 +20,32 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/txtNetworkRowFlag"
+        android:layout_alignStart="@+id/starBar"
         android:layout_marginTop="11dp"
         android:text="Name"
         android:textSize="18sp"
         android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/txtNetworkRowFlag"
+    <RatingBar
+        android:id="@+id/starBar"
+        android:stepSize=".5"
+        style="?android:attr/ratingBarStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/txtNetworkRowName"
-        android:layout_toEndOf="@+id/imgIcon"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="5dp"
+        android:layout_marginStart="15dp"
+        android:layout_marginTop="11dp"
         android:layout_marginBottom="11dp"
-        android:text="rating"
-        android:textSize="14sp"
-        android:textStyle="bold" />
+        android:layout_toEndOf="@+id/imgIcon" />
 
     <TextView
         android:id="@+id/place_address"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
         android:layout_alignStart="@+id/txtNetworkRowName"
-        android:layout_marginTop="75dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="78dp"
         android:text="Address"
         android:textSize="14sp"
         android:textStyle="bold" />

@@ -1,23 +1,34 @@
 package models;
 
+import com.google.gson.annotations.Expose;
+
 import java.util.UUID;
 
 public class Places {
     private UUID Id;
+    @Expose
     private String type;
+    @Expose
     private String name;
+    @Expose
     private String address;
+    @Expose
     private String email;
+    @Expose
     private String description;
+    @Expose
     private String telephone;
+    @Expose
+    private String image;
 
-    public Places(String type, String name, String address, String email, String description, String telephone) {
+    public Places(String type, String name, String address, String email, String description, String telephone, String image) {
         this.type = type;
         this.name = name;
         this.address = address;
         this.email = email;
         this.description = description;
         this.telephone = telephone;
+        this.image = image;
     }
 
     public UUID getId() {
@@ -74,5 +85,13 @@ public class Places {
 
     public void setTelephone(String telephone) {
         this.telephone = telephone;
+    }
+
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
     }
 }
