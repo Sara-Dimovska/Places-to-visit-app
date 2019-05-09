@@ -10,5 +10,17 @@ module.exports = {
         error: 'An error has occured trying to create new place.'
       })
     }
+  },
+  async get_place (req, res) {
+    try {
+      const restaurant = await Place.findOne({
+        where: { id: req.params.id }
+      })
+      res.send(restaurant)
+    } catch (err) {
+      res.status(500).send({
+        error: 'An error has occured trying to  fetch the restaurant.'
+      })
+    }
   }
 }

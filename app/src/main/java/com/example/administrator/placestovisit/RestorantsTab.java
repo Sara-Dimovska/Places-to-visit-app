@@ -1,12 +1,14 @@
 package com.example.administrator.placestovisit;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import java.util.List;
@@ -48,6 +50,16 @@ public class RestorantsTab extends Fragment {
             }
         });
 
+        listViewPlaces.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Places place = (Places) listViewPlaces.getAdapter().getItem(i);
+
+                 Intent intent = new Intent(context, PlaceDetailsActivity.class);
+                 intent.putExtra("PlaceID",place.getId());
+                startActivity(intent);
+            }
+        });
 
         return rootView;
     }

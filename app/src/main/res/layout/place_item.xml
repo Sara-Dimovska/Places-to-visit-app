@@ -49,4 +49,5 @@
         android:text="Address"
         android:textSize="14sp"
         android:textStyle="bold" />
+
 </RelativeLayout>

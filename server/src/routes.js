@@ -17,6 +17,9 @@ module.exports = (app) => {
   app.post('/create_place',
     PlaceController.post
   )
+  app.get('/get_place/:id',
+    PlaceController.get_place
+  )
 
   app.get('/get_restaurants',
     RestaurantsController.get_restaurants

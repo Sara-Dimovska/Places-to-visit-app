@@ -1,11 +1,12 @@
 package models;
 
 import com.google.gson.annotations.Expose;
-
-import java.util.UUID;
+import com.google.gson.annotations.SerializedName;
 
 public class Places {
-    private UUID Id;
+    @Expose
+    @SerializedName("id")
+    private Integer Id;
     @Expose
     private String type;
     @Expose
@@ -31,11 +32,11 @@ public class Places {
         this.image = image;
     }
 
-    public UUID getId() {
+    public Integer getId() {
         return Id;
     }
 
-    public void setId(UUID id) {
+    public void setId(Integer id) {
         Id = id;
     }
 

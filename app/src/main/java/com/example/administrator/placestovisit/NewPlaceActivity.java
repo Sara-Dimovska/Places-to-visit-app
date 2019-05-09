@@ -71,6 +71,7 @@ public class NewPlaceActivity extends AppCompatActivity {
                         Places responsePlace = response.body();
 
                         Toast.makeText(NewPlaceActivity.this, "New place: " + responsePlace.getName() + " has been inserted",Toast.LENGTH_LONG).show();
+
                     }
 
                     @Override
