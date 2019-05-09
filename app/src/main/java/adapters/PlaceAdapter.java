@@ -31,7 +31,6 @@ public class PlaceAdapter extends ArrayAdapter<Places> {
     ImageView image;
     RatingBar stars;
 
-    //UUID id;
 
     public PlaceAdapter(Context context, List<Places> places) {
         super(context, R.layout.place_item, places);

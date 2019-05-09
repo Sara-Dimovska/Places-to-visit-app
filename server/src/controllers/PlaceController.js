@@ -19,7 +19,20 @@ module.exports = {
       res.send(restaurant)
     } catch (err) {
       res.status(500).send({
-        error: 'An error has occured trying to  fetch the restaurant.'
+        error: 'An error has occured trying to  fetch the place.'
+      })
+    }
+  },
+  async delete_place (req, res) {
+    try {
+      const success = await Place.destroy({
+        where: { id: req.params.id }
+      })
+      console.log('Success', success)
+      res.sendStatus(200)
+    } catch (err) {
+      res.status(500).send({
+        error: 'An error has occured trying to  delete the place.'
       })
     }
   }

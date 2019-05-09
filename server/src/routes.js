@@ -20,12 +20,12 @@ module.exports = (app) => {
   app.get('/get_place/:id',
     PlaceController.get_place
   )
+  app.delete('/delete_place/:id',
+    PlaceController.delete_place
+  )
 
   app.get('/get_restaurants',
     RestaurantsController.get_restaurants
-  )
-  app.delete('/delete_restorant/:id',
-    RestaurantsController.delete_restaurants
   )
 
   app.get('/get_bars',
