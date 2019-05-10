@@ -20,6 +20,9 @@ module.exports = (app) => {
   app.get('/get_place/:id',
     PlaceController.get_place
   )
+  app.get('/get_places',
+    PlaceController.get_places
+  )
   app.delete('/delete_place/:id',
     PlaceController.delete_place
   )

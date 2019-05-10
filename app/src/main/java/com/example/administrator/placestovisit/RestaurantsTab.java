@@ -2,8 +2,8 @@ package com.example.administrator.placestovisit;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -16,7 +16,6 @@ import android.widget.Toast;
 
 import java.util.List;
 
-import adapters.NightclubsAdapter;
 import adapters.RestaurantsAdapter;
 import helpers.RetrofitClient;
 import models.Places;
@@ -24,12 +23,13 @@ import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
-import services.NightclubsService;
 import services.PlaceService;
+import services.RestorantsService;
 
-public class NightclubsTab extends Fragment {
-    List<Places> nightclubs_list;
-    ListView listViewNightBars;
+public class RestaurantsTab extends Fragment {
+
+    List<Places> restorants_list;
+    ListView listViewRestaurants;
     Context context;
 
     @Override
@@ -40,24 +40,25 @@ public class NightclubsTab extends Fragment {
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.tab_nightclubs, container, false);
+        View rootView = inflater.inflate(R.layout.tab_restorants, container, false);
+
         context = getActivity().getApplicationContext();
-        listViewNightBars = rootView.findViewById(R.id.listViewNightclubs);
 
 
+        listViewRestaurants = rootView.findViewById(R.id.listViewRestorants);
 
-        registerForContextMenu(listViewNightBars);
+        registerForContextMenu(listViewRestaurants);
 
 
-        populateNightclubs();
+        populateRestaurants();
 
-        listViewNightBars.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        listViewRestaurants.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Places place = (Places) listViewNightBars.getAdapter().getItem(i);
+                Places place_restaurant = (Places) listViewRestaurants.getAdapter().getItem(i);
 
-                Intent intent = new Intent(context, PlaceDetailsActivity.class);
-                intent.putExtra("PlaceID",place.getId());
+                 Intent intent = new Intent(context, PlaceDetailsActivity.class);
+                 intent.putExtra("PlaceID",place_restaurant.getId());
                 startActivity(intent);
             }
         });
@@ -65,30 +66,31 @@ public class NightclubsTab extends Fragment {
         return rootView;
     }
 
-    private void populateNightclubs() {
-        NightclubsService nightclubsServiceAPI = RetrofitClient.getClient().create(NightclubsService.class);
-        Call<List<Places>> getNightclubs = nightclubsServiceAPI.get_nightclubs();
+    private void populateRestaurants() {
+        RestorantsService restaurantsAPI = RetrofitClient.getClient().create(RestorantsService.class);
+        Call<List<Places>> getRestaurants = restaurantsAPI.get_restaurants();
 
-        getNightclubs.enqueue(new Callback<List<Places>>() {
+        getRestaurants.enqueue(new Callback<List<Places>>() {
             @Override
             public void onResponse(Call<List<Places>> call, Response<List<Places>> response) {
-                nightclubs_list = response.body();
-                listViewNightBars.setAdapter(new NightclubsAdapter(context, nightclubs_list));
+                restorants_list = response.body();
+                listViewRestaurants.setAdapter(new RestaurantsAdapter(context, restorants_list));
             }
 
             @Override
             public void onFailure(Call<List<Places>> call, Throwable t) {
-                Log.d("NIGHTCLUBS API FAILES", t.getMessage());
+                Log.d("RESTORANTS API FAILES", t.getMessage());
             }
         });
     }
 
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo){
-        menu.add(2, v.getId(), 0, "Edit");
-        menu.add(2, v.getId(), 0, "Delete");
+        menu.add(0, v.getId(), 0, "Edit");
+        menu.add(0, v.getId(), 0, "Delete");
     }
 
     public boolean onContextItemSelected(MenuItem item){
+
         if( getUserVisibleHint() == false )
         {
             return false;
@@ -98,20 +100,20 @@ public class NightclubsTab extends Fragment {
 
             AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
             int index = info.position;
-            Places nightclub_delete = (Places) listViewNightBars.getAdapter().getItem(index);
+            Places restaurant_delete = (Places) listViewRestaurants.getAdapter().getItem(index);
 
 
             if (item.getTitle() == "Edit")
                 Toast.makeText(getContext(), "Edit Clicked", Toast.LENGTH_LONG).show();
 
             if (item.getTitle() == "Delete") {
-                final String placeName = nightclub_delete.getName();
-                Call<ResponseBody> deletePlace = placeAPI.delete_place(nightclub_delete.getId());
+                final String placeName = restaurant_delete.getName();
+                Call<ResponseBody> deletePlace = placeAPI.delete_place(restaurant_delete.getId());
                 deletePlace.enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         Toast.makeText(getContext(), placeName + " have been deleted", Toast.LENGTH_LONG).show();
-                        populateNightclubs();
+                        populateRestaurants();
                     }
 
                     @Override
@@ -120,7 +122,6 @@ public class NightclubsTab extends Fragment {
                     }
                 });
             }
-        
         return true;
     }
 }

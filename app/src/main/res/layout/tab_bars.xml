@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/constraintLayout"
+    android:id="@+id/barsTab"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".BarsTab">
+    tools:context=".BarsTab"
+    >
 
     <ListView
         android:id="@+id/listViewBars"
@@ -14,4 +14,4 @@
         tools:layout_editor_absoluteX="8dp"
         tools:layout_editor_absoluteY="43dp" />
 
-</LinearLayout>
+</RelativeLayout>
