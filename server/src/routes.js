@@ -23,6 +23,9 @@ module.exports = (app) => {
   app.get('/get_places',
     PlaceController.get_places
   )
+  app.get('/search_places',
+    PlaceController.search_places
+  )
   app.delete('/delete_place/:id',
     PlaceController.delete_place
   )

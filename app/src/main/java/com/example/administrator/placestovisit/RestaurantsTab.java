@@ -16,7 +16,7 @@ import android.widget.Toast;
 
 import java.util.List;
 
-import adapters.RestaurantsAdapter;
+import adapters.PlaceAdapter;
 import helpers.RetrofitClient;
 import models.Places;
 import okhttp3.ResponseBody;
@@ -74,7 +74,7 @@ public class RestaurantsTab extends Fragment {
             @Override
             public void onResponse(Call<List<Places>> call, Response<List<Places>> response) {
                 restorants_list = response.body();
-                listViewRestaurants.setAdapter(new RestaurantsAdapter(context, restorants_list));
+                listViewRestaurants.setAdapter(new PlaceAdapter(context, restorants_list));
             }
 
             @Override

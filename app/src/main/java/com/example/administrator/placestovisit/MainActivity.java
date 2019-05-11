@@ -68,6 +68,12 @@ public class MainActivity extends AppCompatActivity {
             return false;
         }
 
+        if (id == R.id.search_place) {
+            Intent myIntent =  new Intent(MainActivity.this, SearchPlaceActivity.class);
+            startActivity(myIntent);
+            return false;
+        }
+
         return super.onOptionsItemSelected(item);
     }
 

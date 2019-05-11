@@ -1,4 +1,5 @@
 const { Place } = require('../models')
+const Sequelize = require('sequelize')
 
 module.exports = {
   async post (req, res) {
@@ -26,7 +27,19 @@ module.exports = {
   async get_places (req, res) {
     try {
       const places = await Place.findAll({
-        limit: 10
+      })
+      res.send(places)
+    } catch (err) {
+      res.status(500).send({
+        error: 'An error has occured trying to  fetch the places.'
+      })
+    }
+  },
+  async search_places (req, res) {
+    try {
+      const Op = Sequelize.Op
+      const places = await Place.findAll({
+        where: { name: { [Op.like]: '%' + req.query.name + '%' } }
       })
       res.send(places)
     } catch (err) {

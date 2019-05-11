@@ -16,8 +16,7 @@ import android.widget.Toast;
 
 import java.util.List;
 
-import adapters.NightclubsAdapter;
-import adapters.RestaurantsAdapter;
+import adapters.PlaceAdapter;
 import helpers.RetrofitClient;
 import models.Places;
 import okhttp3.ResponseBody;
@@ -73,7 +72,7 @@ public class NightclubsTab extends Fragment {
             @Override
             public void onResponse(Call<List<Places>> call, Response<List<Places>> response) {
                 nightclubs_list = response.body();
-                listViewNightBars.setAdapter(new NightclubsAdapter(context, nightclubs_list));
+                listViewNightBars.setAdapter(new PlaceAdapter(context, nightclubs_list));
             }
 
             @Override
@@ -120,7 +119,7 @@ public class NightclubsTab extends Fragment {
                     }
                 });
             }
-        
+
         return true;
     }
 }

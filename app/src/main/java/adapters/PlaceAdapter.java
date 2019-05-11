@@ -1,8 +1,10 @@
 package adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,11 +16,13 @@ import android.widget.TextView;
 import com.example.administrator.placestovisit.R;
 import com.squareup.picasso.Picasso;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import models.Places;
 
-public class BarsAdapter extends ArrayAdapter<Places> {
+public class PlaceAdapter extends ArrayAdapter<Places> {
 
     Context mContext;
     List<Places> places;
@@ -28,7 +32,7 @@ public class BarsAdapter extends ArrayAdapter<Places> {
     RatingBar stars;
 
 
-    public BarsAdapter(Context context, List<Places> places) {
+    public PlaceAdapter(Context context, List<Places> places) {
         super(context, R.layout.place_item, places);
 
         this.places = places;
@@ -65,4 +69,5 @@ public class BarsAdapter extends ArrayAdapter<Places> {
     {
         return places.get(position);
     }
+
 }
