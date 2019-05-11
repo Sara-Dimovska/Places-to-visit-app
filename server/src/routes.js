@@ -4,6 +4,7 @@ const RestaurantsController = require('./controllers/RestaurantsController')
 const BarsController = require('./controllers/BarsController')
 const NightclubsController = require('./controllers/NightclubsController')
 const PlaceController = require('./controllers/PlaceController')
+const RatingController = require('./controllers/RatingController')
 
 module.exports = (app) => {
   app.post('/register',
@@ -40,5 +41,12 @@ module.exports = (app) => {
 
   app.get('/get_nightclubs',
     NightclubsController.get_nightclubs
+  )
+
+  app.post('/add_rating',
+    RatingController.post
+  )
+  app.get('/get_ratings',
+    RatingController.get_ratings
   )
 }

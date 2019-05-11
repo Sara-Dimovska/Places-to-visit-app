@@ -1,5 +1,8 @@
 package com.example.administrator.placestovisit;
 
+import android.content.Context;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 
 import android.os.Bundle;
@@ -65,7 +68,13 @@ public class LoginActivity extends AppCompatActivity {
                         Log.d("RESPONSE: ",String.valueOf(response.code()));
                         UserResponse userResponse = response.body();
 
-                        Toast.makeText(LoginActivity.this,userResponse.getToken(),Toast.LENGTH_SHORT).show();
+                        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                        SharedPreferences sharedPref = LoginActivity.this.getSharedPreferences("MyPrefs", Context.MODE_PRIVATE);
+                        SharedPreferences.Editor editor = sharedPref.edit();
+                        editor.putInt("userID", userResponse.getUser().getId());
+                        editor.commit();
+
+                        startActivity(intent);
                     }
 
                     @Override
