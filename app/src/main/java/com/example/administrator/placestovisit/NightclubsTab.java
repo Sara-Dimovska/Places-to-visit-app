@@ -2,8 +2,10 @@ package com.example.administrator.placestovisit;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -27,8 +29,11 @@ import services.NightclubsService;
 import services.PlaceService;
 
 public class NightclubsTab extends Fragment {
+
     List<Places> nightclubs_list;
     ListView listViewNightBars;
+    PlaceAdapter nightclubAdapter;
+    SwipeRefreshLayout mSwipeRefreshLayout;
     Context context;
 
     @Override
@@ -41,6 +46,10 @@ public class NightclubsTab extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.tab_nightclubs, container, false);
         context = getActivity().getApplicationContext();
+
+        mSwipeRefreshLayout = rootView.findViewById(R.id.nightclubsTab);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.orange, R.color.green, R.color.blue);
+
         listViewNightBars = rootView.findViewById(R.id.listViewNightclubs);
 
 
@@ -57,14 +66,31 @@ public class NightclubsTab extends Fragment {
 
                 Intent intent = new Intent(context, PlaceDetailsActivity.class);
                 intent.putExtra("PlaceID",place.getId());
-                startActivity(intent);
+                getActivity().startActivity(intent);
+            }
+        });
+
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                //handling swipe refresh
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mSwipeRefreshLayout.setRefreshing(false);
+                        listViewNightBars.setAdapter(null);
+                        populateNightclubs();
+                        nightclubAdapter.notifyDataSetChanged();
+                        listViewNightBars.smoothScrollToPosition(0);
+                    }
+                }, 2000);
             }
         });
 
         return rootView;
     }
 
-    private void populateNightclubs() {
+    public void populateNightclubs() {
         NightclubsService nightclubsServiceAPI = RetrofitClient.getClient().create(NightclubsService.class);
         Call<List<Places>> getNightclubs = nightclubsServiceAPI.get_nightclubs();
 
@@ -72,7 +98,8 @@ public class NightclubsTab extends Fragment {
             @Override
             public void onResponse(Call<List<Places>> call, Response<List<Places>> response) {
                 nightclubs_list = response.body();
-                listViewNightBars.setAdapter(new PlaceAdapter(context, nightclubs_list));
+                nightclubAdapter = new PlaceAdapter(context, nightclubs_list);
+                listViewNightBars.setAdapter(nightclubAdapter);
             }
 
             @Override

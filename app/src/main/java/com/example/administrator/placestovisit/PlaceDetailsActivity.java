@@ -110,12 +110,12 @@ public class PlaceDetailsActivity extends AppCompatActivity {
             public void onClick(View view) {
                 SharedPreferences sharedPref = PlaceDetailsActivity.this.getPreferences(Context.MODE_PRIVATE);
                 Integer userID = sharedPref.getInt("userID", 1);
-                sendFeedbackAPI(userID,place_id,(int)ratingBar.getRating());
+                sendFeedbackAPI(place_id,userID,(int)ratingBar.getRating());
             }
         });
 
     }
-    protected void sendFeedbackAPI(Integer place_id, Integer user_id, Integer rating) {
+    protected void sendFeedbackAPI(Integer place_id, Integer user_id, final Integer rating) {
         Rating add_rating = new Rating(place_id,user_id,rating);
 
         //making api call

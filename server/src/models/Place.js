@@ -9,7 +9,11 @@ module.exports = (sequalize, DataTypes) => {
     address: DataTypes.STRING,
     telephone: DataTypes.STRING,
     description: DataTypes.STRING,
-    image: DataTypes.STRING
+    image: DataTypes.STRING,
+    avgRating: {
+      type: DataTypes.INTEGER,
+      defaultValue: 0
+    }
   })
   return Place
 }

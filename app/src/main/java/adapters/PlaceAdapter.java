@@ -56,7 +56,7 @@ public class PlaceAdapter extends ArrayAdapter<Places> {
         Picasso.get().load(place.getImage()).into(image);
 
         stars = convertView.findViewById(R.id.starBar);
-        stars.setRating(3.5f);
+        stars.setRating(place.getRating());
 
         address = convertView.findViewById(R.id.place_address);
         address.setText(place.getAddress());

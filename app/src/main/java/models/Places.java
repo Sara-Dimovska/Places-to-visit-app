@@ -21,6 +21,9 @@ public class Places {
     private String telephone;
     @Expose
     private String image;
+    @Expose
+    @SerializedName("avgRating")
+    private Integer rating;
 
     public Places(String type, String name, String address, String email, String description, String telephone, String image) {
         this.type = type;
@@ -30,6 +33,14 @@ public class Places {
         this.description = description;
         this.telephone = telephone;
         this.image = image;
+    }
+
+    public void setRating(Integer rating) {
+        this.rating = rating;
+    }
+
+    public Integer getRating() {
+        return rating;
     }
 
     public Integer getId() {

@@ -3,7 +3,9 @@ package com.example.administrator.placestovisit;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.util.Log;
 import android.view.ContextMenu;
 import android.view.LayoutInflater;
@@ -30,7 +32,9 @@ public class BarsTab extends Fragment {
 
     List<Places> bars_list;
     ListView listViewBars;
+    PlaceAdapter barAdapter;
     Context context;
+    SwipeRefreshLayout mSwipeRefreshLayout;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -42,6 +46,10 @@ public class BarsTab extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.tab_bars, container, false);
         context = getActivity().getApplicationContext();
+
+        mSwipeRefreshLayout = rootView.findViewById(R.id.barsTab);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.orange, R.color.green, R.color.blue);
+
         listViewBars = rootView.findViewById(R.id.listViewBars);
         registerForContextMenu(listViewBars);
 
@@ -54,14 +62,30 @@ public class BarsTab extends Fragment {
 
                 Intent intent = new Intent(context, PlaceDetailsActivity.class);
                 intent.putExtra("PlaceID",place.getId());
-                startActivity(intent);
+                getActivity().startActivity(intent);
             }
         });
 
+        mSwipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                //handling swipe refresh
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mSwipeRefreshLayout.setRefreshing(false);
+                        listViewBars.setAdapter(null);
+                        populateBars();
+                        barAdapter.notifyDataSetChanged();
+                        listViewBars.smoothScrollToPosition(0);
+                    }
+                }, 2000);
+            }
+        });
         return rootView;
     }
 
-    private void populateBars() {
+    public void populateBars() {
         BarsService barsAPI = RetrofitClient.getClient().create(BarsService.class);
         Call<List<Places>> getBars = barsAPI.get_bars();
 
@@ -69,7 +93,8 @@ public class BarsTab extends Fragment {
             @Override
             public void onResponse(Call<List<Places>> call, Response<List<Places>> response) {
                 bars_list =  response.body();
-                listViewBars.setAdapter(new PlaceAdapter(context, bars_list));
+                barAdapter = new PlaceAdapter(context, bars_list);
+                listViewBars.setAdapter(barAdapter);
             }
 
             @Override
@@ -107,7 +132,6 @@ public class BarsTab extends Fragment {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         Toast.makeText(getContext(), placeName + " have been deleted", Toast.LENGTH_LONG).show();
-
                         populateBars();
                     }
 
