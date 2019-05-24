@@ -16,6 +16,9 @@ public interface PlaceService {
     @POST("create_place")
     Call<Places> post(@Body Places place);
 
+    @POST("/edit_place/{id}")
+    Call<ResponseBody> edit_place(@Path("id") Integer id, @Body Places place);
+
     @GET("/get_place/{id}")
     Call<Places> get_place(@Path("id") Integer id);
 

@@ -1,5 +1,6 @@
 const { Place } = require('../models')
 const Sequelize = require('sequelize')
+const { Rating } = require('../models')
 
 module.exports = {
   async post (req, res) {
@@ -41,6 +42,17 @@ module.exports = {
       const places = await Place.findAll({
         where: { name: { [Op.like]: '%' + req.query.name + '%' } }
       })
+      for (let place of places) {
+        const result = await Rating.findAll({
+          raw: true,
+          group: ['place_id'],
+          attributes: [[Sequelize.fn('avg', Sequelize.col('rating')), 'avgRating']],
+          where: { place_id: place.id }
+        })
+        if (result.length > 0) {
+          place.avgRating = Math.round(result[0].avgRating)
+        }
+      }
       res.send(places)
     } catch (err) {
       res.status(500).send({
@@ -58,6 +70,19 @@ module.exports = {
     } catch (err) {
       res.status(500).send({
         error: 'An error has occured trying to  delete the place.'
+      })
+    }
+  },
+  async edit_place (req, res) {
+    try {
+      const result = await Place.update(req.body, {
+        where: { id: req.params.id }
+      })
+      console.log(result)
+      res.sendStatus(200)
+    } catch (err) {
+      res.status(500).send({
+        error: 'An error has occured trying to  edit the place.'
       })
     }
   }

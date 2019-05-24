@@ -44,7 +44,7 @@ public class RestaurantsTab extends Fragment {
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.tab_restorants, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_tab_restorants, container, false);
 
         context = getActivity().getApplicationContext();
 
@@ -122,15 +122,19 @@ public class RestaurantsTab extends Fragment {
 
             AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
             int index = info.position;
-            Places restaurant_delete = (Places) listViewRestaurants.getAdapter().getItem(index);
+            Places restaurant_clicked = (Places) listViewRestaurants.getAdapter().getItem(index);
 
 
-            if (item.getTitle() == "Edit")
-                Toast.makeText(getContext(), "Edit Clicked", Toast.LENGTH_LONG).show();
+            if (item.getTitle() == "Edit") {
+                Intent myIntent =  new Intent(getActivity().getApplicationContext(), EditPlaceActivity.class);
+                myIntent.putExtra("Edit_ID", restaurant_clicked.getId());
+                myIntent.putExtra("Edit_place_type", "restaurant");
+                startActivity(myIntent);
+            }
 
             if (item.getTitle() == "Delete") {
-                final String placeName = restaurant_delete.getName();
-                Call<ResponseBody> deletePlace = placeAPI.delete_place(restaurant_delete.getId());
+                final String placeName = restaurant_clicked.getName();
+                Call<ResponseBody> deletePlace = placeAPI.delete_place(restaurant_clicked.getId());
                 deletePlace.enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

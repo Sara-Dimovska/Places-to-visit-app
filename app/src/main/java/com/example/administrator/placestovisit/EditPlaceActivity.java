@@ -1,7 +1,8 @@
 package com.example.administrator.placestovisit;
 
-import android.support.v7.app.AppCompatActivity;
+import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -12,24 +13,26 @@ import android.widget.Toast;
 
 import helpers.RetrofitClient;
 import models.Places;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 import services.PlaceService;
-import services.RestorantsService;
 
-public class NewPlaceActivity extends AppCompatActivity {
-
+public class EditPlaceActivity extends AppCompatActivity {
     EditText imageURLView, nameView, emailView, telephoneView, descriptionView, addressView;
     String imageURL, name, email, telephone, description, address, placeType;
     RadioGroup radioGroupView;
     RadioButton radioBtnChecked;
     Button submit;
+    int place_ID;
+    PlaceService api;
+    String place_type_extra;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_new_place);
+        setContentView(R.layout.activity_edit_place);
 
         submit = findViewById(R.id.submit);
         imageURLView = findViewById(R.id.enter_imgURL);
@@ -39,7 +42,43 @@ public class NewPlaceActivity extends AppCompatActivity {
         descriptionView = findViewById(R.id.enter_desc);
         addressView = findViewById(R.id.enter_address);
         radioGroupView = findViewById(R.id.radios);
-        // radioBtnChecked =
+
+        Intent intent = getIntent();
+        place_ID = intent.getExtras().getInt("Edit_ID");
+        place_type_extra = intent.getStringExtra("Edit_place_type");
+        api = RetrofitClient.getClient().create(PlaceService.class);
+
+        //API for populating fields
+        Call<Places> getPlace = api.get_place(place_ID);
+        getPlace.enqueue(new Callback<Places>() {
+            @Override
+            public void onResponse(Call<Places> call, Response<Places> response) {
+                Places responsePlace = response.body();
+                imageURLView.setText(responsePlace.getImage());
+                nameView.setText(responsePlace.getName());
+                descriptionView.setText(responsePlace.getDescription());
+                addressView.setText(responsePlace.getAddress());
+                telephoneView.setText(responsePlace.getTelephone());
+                emailView.setText(responsePlace.getEmail());
+
+                switch (place_type_extra) {
+                    case "restaurant":
+                        radioGroupView.check(R.id.radioRestaurant);
+                        break;
+                    case "bar":
+                        radioGroupView.check(R.id.radioBar);
+                        break;
+                    case "nightclub":
+                        radioGroupView.check(R.id.radioNightclub);
+                        break;
+                }
+            }
+
+            @Override
+            public void onFailure(Call<Places> call, Throwable throwable) {
+
+            }
+        });
 
 
         submit.setOnClickListener(new View.OnClickListener() {
@@ -57,35 +96,27 @@ public class NewPlaceActivity extends AppCompatActivity {
 
                 Places place = new Places(placeType,  name,  address,  email,  description,  telephone,  imageURL);
 
-                PlaceService api = RetrofitClient.getClient().create(PlaceService.class);
-                Call<Places> addNewPlace = api.post(place);
 
-                addNewPlace.enqueue(new Callback<Places>() {
+                Call<ResponseBody> editPlace = api.edit_place(place_ID,place);
+                editPlace.enqueue(new Callback<ResponseBody>() {
                     @Override
-                    public void onResponse(Call<Places> call, Response<Places> response) {
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                         if(!response.isSuccessful()) {
                             Log.d("RESPONSE_ERROR: ",String.valueOf(response.code()));
                             return;
                         }
                         Log.d("RESPONSE: ",String.valueOf(response.code()));
-                        Places responsePlace = response.body();
-
-                        Toast.makeText(NewPlaceActivity.this, "New place: " + responsePlace.getName() + " has been inserted",Toast.LENGTH_LONG).show();
-                        imageURLView.setText("");
-                        nameView.setText("");
-                        descriptionView.setText("");
-                        addressView.setText("");
-                        telephoneView.setText("");
-                        emailView.setText("");
-
+                        if(response.code() == 200) {
+                            Toast.makeText(EditPlaceActivity.this, "Place: " + name + " has been updated",Toast.LENGTH_LONG).show();
+                        }
                     }
 
                     @Override
-                    public void onFailure(Call<Places> call, Throwable t) {
-                        Toast.makeText(NewPlaceActivity.this,t.getLocalizedMessage(),Toast.LENGTH_SHORT).show();
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        Toast.makeText(EditPlaceActivity.this,t.getLocalizedMessage(),Toast.LENGTH_SHORT).show();
+
                     }
                 });
-
 
             }
         });

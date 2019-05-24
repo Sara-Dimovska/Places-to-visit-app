@@ -44,7 +44,7 @@ public class NightclubsTab extends Fragment {
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.tab_nightclubs, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_tab_nightclubs, container, false);
         context = getActivity().getApplicationContext();
 
         mSwipeRefreshLayout = rootView.findViewById(R.id.nightclubsTab);
@@ -124,15 +124,19 @@ public class NightclubsTab extends Fragment {
 
             AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
             int index = info.position;
-            Places nightclub_delete = (Places) listViewNightBars.getAdapter().getItem(index);
+            Places nightclub_clicked = (Places) listViewNightBars.getAdapter().getItem(index);
 
 
-            if (item.getTitle() == "Edit")
-                Toast.makeText(getContext(), "Edit Clicked", Toast.LENGTH_LONG).show();
+            if (item.getTitle() == "Edit") {
+                Intent myIntent =  new Intent(getActivity().getApplicationContext(), EditPlaceActivity.class);
+                myIntent.putExtra("Edit_ID", nightclub_clicked.getId());
+                myIntent.putExtra("Edit_place_type", "nightclub");
+                startActivity(myIntent);
+            }
 
             if (item.getTitle() == "Delete") {
-                final String placeName = nightclub_delete.getName();
-                Call<ResponseBody> deletePlace = placeAPI.delete_place(nightclub_delete.getId());
+                final String placeName = nightclub_clicked.getName();
+                Call<ResponseBody> deletePlace = placeAPI.delete_place(nightclub_clicked.getId());
                 deletePlace.enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

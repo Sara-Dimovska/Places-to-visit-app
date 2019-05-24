@@ -15,10 +15,9 @@
         <activity android:name=".PlaceDetailsActivity"></activity>
         <activity android:name=".NewPlaceActivity" />
         <activity android:name=".SearchPlaceActivity" />
+        <activity android:name=".EditPlaceActivity" />
         <activity
-            android:name=".LoginActivity"
-            android:label="@string/app_name">
-
+            android:name=".LoginActivity">
 
         </activity>
 

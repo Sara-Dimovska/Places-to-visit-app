@@ -44,7 +44,7 @@ public class BarsTab extends Fragment {
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.tab_bars, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_tab_bars, container, false);
         context = getActivity().getApplicationContext();
 
         mSwipeRefreshLayout = rootView.findViewById(R.id.barsTab);
@@ -119,15 +119,19 @@ public class BarsTab extends Fragment {
 
             AdapterView.AdapterContextMenuInfo info = (AdapterView.AdapterContextMenuInfo) item.getMenuInfo();
             int index = info.position;
-            Places bar_delete = (Places) listViewBars.getAdapter().getItem(index);
+            Places bar_clicked = (Places) listViewBars.getAdapter().getItem(index);
 
 
-            if (item.getTitle() == "Edit")
-                Toast.makeText(getContext(), "Edit Clicked", Toast.LENGTH_LONG).show();
+            if (item.getTitle() == "Edit") {
+                Intent myIntent =  new Intent(getActivity().getApplicationContext(), EditPlaceActivity.class);
+                myIntent.putExtra("Edit_ID", bar_clicked.getId());
+                myIntent.putExtra("Edit_place_type", "bar");
+                startActivity(myIntent);
+            }
 
             if (item.getTitle() == "Delete") {
-                final String placeName = bar_delete.getName();
-                Call<ResponseBody> deletePlace = placeAPI.delete_place(bar_delete.getId());
+                final String placeName = bar_clicked.getName();
+                Call<ResponseBody> deletePlace = placeAPI.delete_place(bar_clicked.getId());
                 deletePlace.enqueue(new Callback<ResponseBody>() {
                     @Override
                     public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {

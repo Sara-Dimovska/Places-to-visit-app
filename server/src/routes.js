@@ -30,6 +30,9 @@ module.exports = (app) => {
   app.delete('/delete_place/:id',
     PlaceController.delete_place
   )
+  app.post('/edit_place/:id',
+    PlaceController.edit_place
+  )
 
   app.get('/get_restaurants',
     RestaurantsController.get_restaurants

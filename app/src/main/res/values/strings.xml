@@ -4,7 +4,7 @@
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
     <string name="prompt_password">Password</string>
-    <string name="action_sign_in">Submit</string>
+    <string name="action_sign_in">LOGIN</string>
     <string name="action_register">Register</string>
     <string name="action_login_form">Login form</string>
     <string name="error_invalid_email">This email address is invalid</string>

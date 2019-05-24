@@ -33,14 +33,15 @@
             android:layout_gravity="center"
             >
 
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="@string/action_login_form"
-                android:padding="20dp"
-                android:textAlignment="center"
-                android:textSize="20dp"/>
+            <ImageView
+                android:id="@+id/imgIcon"
+                android:layout_width="350dp"
+                android:layout_height="130dp"
+                android:layout_alignParentStart="true"
+                android:layout_alignTop="@+id/txtNetworkRowName"
+                android:layout_marginBottom="30dp"
+                android:gravity="center"
+                android:src="@drawable/placeintersest" />
 
             <android.support.design.widget.TextInputLayout
                 android:layout_width="match_parent"
@@ -70,6 +71,7 @@
                     android:imeOptions="actionUnspecified"
                     android:inputType="textPassword"
                     android:maxLines="1"
+                    android:layout_marginBottom="20dp"
                     android:singleLine="true" />
 
             </android.support.design.widget.TextInputLayout>
@@ -79,16 +81,21 @@
                 style="?android:textAppearanceSmall"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="20dp"
                 android:text="@string/action_sign_in"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:layout_marginBottom="17dp"
+                android:textColor="@color/white"
+                android:background="@color/logoBlue"/>
 
 
             <TextView
                 android:id="@+id/textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text=""
+                android:textSize="18dp"
+                android:textAlignment="center"
+                android:text="No account yet? Create one"
                 android:layout_marginTop="16dp"
                 />
 

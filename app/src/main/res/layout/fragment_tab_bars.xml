@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v4.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/restaurantsTab"
+    android:id="@+id/barsTab"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context=".RestaurantsTab">
+    android:layout_height="wrap_content"
+    tools:context=".BarsTab"
+    >
 
     <ListView
-        android:id="@+id/listViewRestorants"
+        android:id="@+id/listViewBars"
         android:layout_width="match_parent"
-        android:layout_height="match_parent" />
+        android:layout_height="match_parent"
+        tools:layout_editor_absoluteX="8dp"
+        tools:layout_editor_absoluteY="43dp" />
+
 </android.support.v4.widget.SwipeRefreshLayout>
