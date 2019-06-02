@@ -37,13 +37,22 @@ module.exports = (app) => {
   app.get('/get_restaurants',
     RestaurantsController.get_restaurants
   )
+  app.get('/search_restaurants',
+    RestaurantsController.search_restaurants
+  )
 
   app.get('/get_bars',
     BarsController.get_bars
   )
+  app.get('/search_bars',
+    BarsController.search_bars
+  )
 
   app.get('/get_nightclubs',
     NightclubsController.get_nightclubs
+  )
+  app.get('/search_nightclubs',
+    NightclubsController.search_nightclubs
   )
 
   app.post('/add_rating',

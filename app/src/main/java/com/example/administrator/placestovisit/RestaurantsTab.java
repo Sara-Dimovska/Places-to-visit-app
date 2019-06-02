@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.support.v7.widget.SearchView;
 import android.widget.Toast;
 
 import java.util.List;
@@ -35,6 +36,7 @@ public class RestaurantsTab extends Fragment {
     PlaceAdapter restaurantAdapter;
     Context context;
     SwipeRefreshLayout mSwipeRefreshLayout;
+    SearchView searchView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -51,6 +53,8 @@ public class RestaurantsTab extends Fragment {
         mSwipeRefreshLayout = rootView.findViewById(R.id.restaurantsTab);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.orange, R.color.green, R.color.blue);
         listViewRestaurants = rootView.findViewById(R.id.listViewRestorants);
+        searchView = rootView.findViewById(R.id.search);
+        searchView.setQueryHint("Search restaurants");
 
         registerForContextMenu(listViewRestaurants);
 
@@ -81,6 +85,35 @@ public class RestaurantsTab extends Fragment {
                         listViewRestaurants.smoothScrollToPosition(0);
                     }
                 }, 2000);
+            }
+        });
+
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                RestorantsService searchAPI = RetrofitClient.getClient().create(RestorantsService.class);
+                Call<List<Places>> getSearchResult = searchAPI.search_restaurants(s);
+
+                getSearchResult.enqueue(new Callback<List<Places>>() {
+                    @Override
+                    public void onResponse(Call<List<Places>> call, Response<List<Places>> response) {
+                        restorants_list = response.body();
+                        listViewRestaurants.setAdapter(new PlaceAdapter(getActivity().getApplicationContext(), restorants_list));
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<Places>> call, Throwable t) {
+                        Log.d("RESTORANTS API FAILES", t.getMessage());
+                    }
+                });
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
             }
         });
 
@@ -150,4 +183,6 @@ public class RestaurantsTab extends Fragment {
             }
         return true;
     }
+
+
 }

@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.support.v7.widget.SearchView;
 import android.widget.Toast;
 
 import java.util.List;
@@ -27,6 +28,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import services.BarsService;
 import services.PlaceService;
+import services.RestorantsService;
 
 public class BarsTab extends Fragment {
 
@@ -35,6 +37,7 @@ public class BarsTab extends Fragment {
     PlaceAdapter barAdapter;
     Context context;
     SwipeRefreshLayout mSwipeRefreshLayout;
+    SearchView searchView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,6 +55,9 @@ public class BarsTab extends Fragment {
 
         listViewBars = rootView.findViewById(R.id.listViewBars);
         registerForContextMenu(listViewBars);
+
+        searchView = rootView.findViewById(R.id.search);
+        searchView.setQueryHint("Search bars");
 
         populateBars();
 
@@ -82,6 +88,35 @@ public class BarsTab extends Fragment {
                 }, 2000);
             }
         });
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                BarsService searchAPI = RetrofitClient.getClient().create(BarsService.class);
+                Call<List<Places>> getSearchResult = searchAPI.search_bars(s);
+
+                getSearchResult.enqueue(new Callback<List<Places>>() {
+                    @Override
+                    public void onResponse(Call<List<Places>> call, Response<List<Places>> response) {
+                        bars_list = response.body();
+                        listViewBars.setAdapter(new PlaceAdapter(getActivity().getApplicationContext(), bars_list));
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<Places>> call, Throwable t) {
+                        Log.d("RESTORANTS API FAILES", t.getMessage());
+                    }
+                });
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
+            }
+        });
+
         return rootView;
     }
 

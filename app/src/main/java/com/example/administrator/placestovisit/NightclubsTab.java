@@ -17,6 +17,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import java.util.List;
+import android.support.v7.widget.SearchView;
 
 import adapters.PlaceAdapter;
 import helpers.RetrofitClient;
@@ -27,6 +28,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 import services.NightclubsService;
 import services.PlaceService;
+import services.RestorantsService;
 
 public class NightclubsTab extends Fragment {
 
@@ -35,6 +37,7 @@ public class NightclubsTab extends Fragment {
     PlaceAdapter nightclubAdapter;
     SwipeRefreshLayout mSwipeRefreshLayout;
     Context context;
+    SearchView searchView;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -52,7 +55,8 @@ public class NightclubsTab extends Fragment {
 
         listViewNightBars = rootView.findViewById(R.id.listViewNightclubs);
 
-
+        searchView = rootView.findViewById(R.id.search);
+        searchView.setQueryHint("Search nightclubs");
 
         registerForContextMenu(listViewNightBars);
 
@@ -84,6 +88,34 @@ public class NightclubsTab extends Fragment {
                         listViewNightBars.smoothScrollToPosition(0);
                     }
                 }, 2000);
+            }
+        });
+
+        searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String s) {
+                NightclubsService searchAPI = RetrofitClient.getClient().create(NightclubsService.class);
+                Call<List<Places>> getSearchResult = searchAPI.search_nightclubs(s);
+
+                getSearchResult.enqueue(new Callback<List<Places>>() {
+                    @Override
+                    public void onResponse(Call<List<Places>> call, Response<List<Places>> response) {
+                        nightclubs_list = response.body();
+                        listViewNightBars.setAdapter(new PlaceAdapter(getActivity().getApplicationContext(), nightclubs_list));
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<Places>> call, Throwable t) {
+                        Log.d("RESTORANTS API FAILES", t.getMessage());
+                    }
+                });
+
+                return false;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String s) {
+                return false;
             }
         });
 
