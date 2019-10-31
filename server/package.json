@@ -19,7 +19,7 @@
     "jsonwebtoken": "^8.4.0",
     "morgan": "^1.9.1",
     "nodemon": "^1.18.9",
-    "sequelize": "^4.42.0",
+    "sequelize": "^5.15.1",
     "sqlite3": "https://github.com/mapbox/node-sqlite3/tarball/master"
   },
   "devDependencies": {
